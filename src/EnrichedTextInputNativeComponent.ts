@@ -135,6 +135,7 @@ export interface NativeProps extends ViewProps {
   selectionColor?: ColorValue;
   autoCapitalize?: string;
   htmlStyle?: HtmlStyleInternal;
+  keyboardAppearance?: string;
 
   // event callbacks
   onInputFocus?: DirectEventHandler<null>;

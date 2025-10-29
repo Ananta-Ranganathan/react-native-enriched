@@ -78,9 +78,9 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   emitHtml = NO;
   blockEmitting = NO;
   _emitFocusBlur = YES;
-  
+
   defaultTypingAttributes = [[NSMutableDictionary<NSAttributedStringKey, id> alloc] init];
-  
+
   stylesDict = @{
     @([BoldStyle getStyleType]) : [[BoldStyle alloc] initWithInput:self],
     @([ItalicStyle getStyleType]): [[ItalicStyle alloc] initWithInput:self],
@@ -96,7 +96,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     @([OrderedListStyle getStyleType]): [[OrderedListStyle alloc] initWithInput:self],
     @([BlockQuoteStyle getStyleType]): [[BlockQuoteStyle alloc] initWithInput:self]
   };
-  
+
   _conflictingStyles = @{
     @([BoldStyle getStyleType]) : @[],
     @([ItalicStyle getStyleType]) : @[],
@@ -112,7 +112,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     @([OrderedListStyle getStyleType]): @[@([H1Style getStyleType]), @([H2Style getStyleType]), @([H3Style getStyleType]), @([UnorderedListStyle getStyleType]), @([BlockQuoteStyle getStyleType])],
     @([BlockQuoteStyle getStyleType]): @[@([H1Style getStyleType]), @([H2Style getStyleType]), @([H3Style getStyleType]), @([UnorderedListStyle getStyleType]), @([OrderedListStyle getStyleType])]
   };
-  
+
   _blockingStyles = @{
     @([BoldStyle getStyleType]) : @[],
     @([ItalicStyle getStyleType]) : @[],
@@ -128,7 +128,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     @([OrderedListStyle getStyleType]): @[],
     @([BlockQuoteStyle getStyleType]): @[],
   };
-  
+
   parser = [[InputParser alloc] initWithInput:self];
 }
 
@@ -164,18 +164,18 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   const auto &newViewProps = *std::static_pointer_cast<EnrichedTextInputViewProps const>(props);
   BOOL isFirstMount = NO;
   BOOL stylePropChanged = NO;
-  
+
   // initial config
   if(config == nullptr) {
     isFirstMount = YES;
     config = [[InputConfig alloc] init];
   }
-  
+
   // any style prop changes:
   // firstly we create the new config for the changes
-  
+
   InputConfig *newConfig = [config copy];
-  
+
   if(newViewProps.color != oldViewProps.color) {
     if(isColorMeaningful(newViewProps.color)) {
       UIColor *uiColor = RCTUIColorFromSharedColor(newViewProps.color);
@@ -185,7 +185,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.fontSize != oldViewProps.fontSize) {
     if(newViewProps.fontSize) {
       NSNumber* fontSize = @(newViewProps.fontSize);
@@ -195,7 +195,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.fontWeight != oldViewProps.fontWeight) {
     if(!newViewProps.fontWeight.empty()) {
       [newConfig setPrimaryFontWeight:[NSString fromCppString:newViewProps.fontWeight]];
@@ -204,7 +204,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-    
+
   if(newViewProps.fontFamily != oldViewProps.fontFamily) {
     if(!newViewProps.fontFamily.empty()) {
       [newConfig setPrimaryFontFamily:[NSString fromCppString:newViewProps.fontFamily]];
@@ -213,56 +213,56 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   // rich text style
-  
+
   if(newViewProps.htmlStyle.h1.fontSize != oldViewProps.htmlStyle.h1.fontSize) {
     [newConfig setH1FontSize:newViewProps.htmlStyle.h1.fontSize];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.h1.bold != oldViewProps.htmlStyle.h1.bold) {
     [newConfig setH1Bold:newViewProps.htmlStyle.h1.bold];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.h2.fontSize != oldViewProps.htmlStyle.h2.fontSize) {
     [newConfig setH2FontSize:newViewProps.htmlStyle.h2.fontSize];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.h2.bold != oldViewProps.htmlStyle.h2.bold) {
     [newConfig setH2Bold:newViewProps.htmlStyle.h2.bold];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.h3.fontSize != oldViewProps.htmlStyle.h3.fontSize) {
     [newConfig setH3FontSize:newViewProps.htmlStyle.h3.fontSize];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.h3.bold != oldViewProps.htmlStyle.h3.bold) {
     [newConfig setH3Bold:newViewProps.htmlStyle.h3.bold];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.blockquote.borderColor != oldViewProps.htmlStyle.blockquote.borderColor) {
     if(isColorMeaningful(newViewProps.htmlStyle.blockquote.borderColor)) {
       [newConfig setBlockquoteBorderColor:RCTUIColorFromSharedColor(newViewProps.htmlStyle.blockquote.borderColor)];
       stylePropChanged = YES;
     }
   }
-  
+
   if(newViewProps.htmlStyle.blockquote.borderWidth != oldViewProps.htmlStyle.blockquote.borderWidth) {
     [newConfig setBlockquoteBorderWidth:newViewProps.htmlStyle.blockquote.borderWidth];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.blockquote.gapWidth != oldViewProps.htmlStyle.blockquote.gapWidth) {
     [newConfig setBlockquoteGapWidth:newViewProps.htmlStyle.blockquote.gapWidth];
     stylePropChanged = YES;
   }
-  
+
   // since this prop defaults to undefined on JS side, we need to force set the value on first mount
   if(newViewProps.htmlStyle.blockquote.color != oldViewProps.htmlStyle.blockquote.color || isFirstMount) {
     if(isColorMeaningful(newViewProps.htmlStyle.blockquote.color)) {
@@ -272,31 +272,31 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.code.color != oldViewProps.htmlStyle.code.color) {
     if(isColorMeaningful(newViewProps.htmlStyle.code.color)) {
       [newConfig setInlineCodeFgColor:RCTUIColorFromSharedColor(newViewProps.htmlStyle.code.color)];
       stylePropChanged = YES;
     }
   }
-  
+
   if(newViewProps.htmlStyle.code.backgroundColor != oldViewProps.htmlStyle.code.backgroundColor) {
     if(isColorMeaningful(newViewProps.htmlStyle.code.backgroundColor)) {
       [newConfig setInlineCodeBgColor:RCTUIColorFromSharedColor(newViewProps.htmlStyle.code.backgroundColor)];
       stylePropChanged = YES;
     }
   }
-  
+
   if(newViewProps.htmlStyle.ol.gapWidth != oldViewProps.htmlStyle.ol.gapWidth) {
     [newConfig setOrderedListGapWidth:newViewProps.htmlStyle.ol.gapWidth];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.ol.marginLeft != oldViewProps.htmlStyle.ol.marginLeft) {
     [newConfig setOrderedListMarginLeft:newViewProps.htmlStyle.ol.marginLeft];
     stylePropChanged = YES;
   }
-  
+
   // since this prop defaults to undefined on JS side, we need to force set the value on first mount
   if(newViewProps.htmlStyle.ol.markerFontWeight != oldViewProps.htmlStyle.ol.markerFontWeight || isFirstMount) {
     if(!newViewProps.htmlStyle.ol.markerFontWeight.empty()) {
@@ -306,7 +306,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   // since this prop defaults to undefined on JS side, we need to force set the value on first mount
   if(newViewProps.htmlStyle.ol.markerColor != oldViewProps.htmlStyle.ol.markerColor || isFirstMount) {
     if(isColorMeaningful(newViewProps.htmlStyle.ol.markerColor)) {
@@ -316,36 +316,36 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.ul.bulletColor != oldViewProps.htmlStyle.ul.bulletColor) {
     if(isColorMeaningful(newViewProps.htmlStyle.ul.bulletColor)) {
       [newConfig setUnorderedListBulletColor:RCTUIColorFromSharedColor(newViewProps.htmlStyle.ul.bulletColor)];
       stylePropChanged = YES;
     }
   }
-  
+
   if(newViewProps.htmlStyle.ul.bulletSize != oldViewProps.htmlStyle.ul.bulletSize) {
     [newConfig setUnorderedListBulletSize:newViewProps.htmlStyle.ul.bulletSize];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.ul.gapWidth != oldViewProps.htmlStyle.ul.gapWidth) {
     [newConfig setUnorderedListGapWidth:newViewProps.htmlStyle.ul.gapWidth];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.ul.marginLeft != oldViewProps.htmlStyle.ul.marginLeft) {
     [newConfig setUnorderedListMarginLeft:newViewProps.htmlStyle.ul.marginLeft];
     stylePropChanged = YES;
   }
-  
+
   if(newViewProps.htmlStyle.a.color != oldViewProps.htmlStyle.a.color) {
     if(isColorMeaningful(newViewProps.htmlStyle.a.color)) {
       [newConfig setLinkColor:RCTUIColorFromSharedColor(newViewProps.htmlStyle.a.color)];
       stylePropChanged = YES;
     }
   }
-  
+
   if(newViewProps.htmlStyle.a.textDecorationLine != oldViewProps.htmlStyle.a.textDecorationLine) {
     NSString *objcString = [NSString fromCppString:newViewProps.htmlStyle.a.textDecorationLine];
     if([objcString isEqualToString:DecorationUnderline]) {
@@ -356,12 +356,12 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     stylePropChanged = YES;
   }
-  
+
   folly::dynamic oldMentionStyle = oldViewProps.htmlStyle.mention;
   folly::dynamic newMentionStyle = newViewProps.htmlStyle.mention;
   if(oldMentionStyle != newMentionStyle) {
     bool newSingleProps = NO;
-    
+
     for(const auto& obj : newMentionStyle.items()) {
       if(obj.second.isInt() || obj.second.isString()) {
         // we are in just a single MentionStyleProps object
@@ -373,43 +373,43 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
         break;
       }
     }
-    
+
     if(newSingleProps) {
       [newConfig setMentionStyleProps:[MentionStyleProps getSinglePropsFromFollyDynamic:newMentionStyle]];
     } else {
       [newConfig setMentionStyleProps:[MentionStyleProps getComplexPropsFromFollyDynamic:newMentionStyle]];
     }
-    
+
     stylePropChanged = YES;
   }
-  
+
   if(stylePropChanged) {
     // all the text needs to be rebuilt
     // we get the current html using old config, then switch to new config and replace text using the html
     // this way, the newest config attributes are being used!
-    
+
     // the html needs to be generated using the old config
     NSString *currentHtml = [parser parseToHtmlFromRange:NSMakeRange(0, textView.textStorage.string.length)];
-    
+
     // now set the new config
     config = newConfig;
-    
+
     // we don't want to emit these html changes in here
     BOOL prevEmitHtml = emitHtml;
     if(prevEmitHtml) {
       emitHtml = NO;
     }
-    
+
     // make sure everything is sound in the html
     NSString *initiallyProcessedHtml = [parser initiallyProcessHtml:currentHtml];
     if(initiallyProcessedHtml != nullptr) {
       [parser replaceWholeFromHtml:initiallyProcessedHtml];
     }
-    
+
     if(prevEmitHtml) {
       emitHtml = YES;
     }
-    
+
     // fill the typing attributes with style props
     defaultTypingAttributes[NSForegroundColorAttributeName] = [config primaryColor];
     defaultTypingAttributes[NSFontAttributeName] = [config primaryFont];
@@ -417,20 +417,20 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     defaultTypingAttributes[NSStrikethroughColorAttributeName] = [config primaryColor];
     defaultTypingAttributes[NSParagraphStyleAttributeName] = [[NSParagraphStyle alloc] init];
     textView.typingAttributes = defaultTypingAttributes;
-    
+
     // update the placeholder as well
     [self refreshPlaceholderLabelStyles];
   }
-  
+
   // editable
   if(newViewProps.editable != textView.editable) {
     textView.editable = newViewProps.editable;
   }
-  
+
   // default value - must be set before placeholder to make sure it correctly shows on first mount
   if(newViewProps.defaultValue != oldViewProps.defaultValue) {
     NSString *newDefaultValue = [NSString fromCppString:newViewProps.defaultValue];
-    
+
     NSString *initiallyProcessedHtml = [parser initiallyProcessHtml:newDefaultValue];
     if(initiallyProcessedHtml == nullptr) {
       // just plain text
@@ -440,7 +440,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       [parser replaceWholeFromHtml:initiallyProcessedHtml];
     }
   }
-  
+
   // placeholderTextColor
   if(newViewProps.placeholderTextColor != oldViewProps.placeholderTextColor) {
     // some real color
@@ -451,7 +451,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     [self refreshPlaceholderLabelStyles];
   }
-  
+
   // placeholder
   if(newViewProps.placeholder != oldViewProps.placeholder) {
     _placeholderLabel.text = [NSString fromCppString:newViewProps.placeholder];
@@ -461,7 +461,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       [self setPlaceholderLabelShown:YES];
     }
   }
-  
+
   // mention indicators
   auto mismatchPair = std::mismatch(
     newViewProps.mentionIndicators.begin(), newViewProps.mentionIndicators.end(),
@@ -476,7 +476,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     }
     [config setMentionIndicators:newIndicators];
   }
-  
+
   // selection color sets both selection and cursor on iOS (just as in RN)
   if(newViewProps.selectionColor != oldViewProps.selectionColor) {
     if(isColorMeaningful(newViewProps.selectionColor)) {
@@ -485,7 +485,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       textView.tintColor = nullptr;
     }
   }
-  
+
   // autoCapitalize
   if(newViewProps.autoCapitalize != oldViewProps.autoCapitalize) {
     NSString *str = [NSString fromCppString:newViewProps.autoCapitalize];
@@ -498,7 +498,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     } else if([str isEqualToString: @"characters"]) {
       textView.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
     }
-    
+
     // textView needs to be refocused on autocapitalization type change and we don't want to emit these events
     if([textView isFirstResponder]) {
       _emitFocusBlur = NO;
@@ -507,15 +507,40 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       _emitFocusBlur = YES;
     }
   }
-  
+
+  if(newViewProps.keyboardAppearance != oldViewProps.keyboardAppearance) {
+      NSString *appearance = [NSString fromCppString:newViewProps.keyboardAppearance];
+      UIKeyboardAppearance uiAppearance = UIKeyboardAppearanceDefault;
+
+      if ([appearance isEqualToString:@"dark"]) {
+        uiAppearance = UIKeyboardAppearanceDark;
+      } else if ([appearance isEqualToString:@"light"]) {
+        uiAppearance = UIKeyboardAppearanceLight;
+      }
+
+      textView.keyboardAppearance = uiAppearance;
+
+      if ([textView isFirstResponder]) {
+        // refresh the currently visible keyboard
+        if ([textView respondsToSelector:@selector(reloadInputViews)]) {
+          [textView reloadInputViews];
+        } else {
+          _emitFocusBlur = NO;
+          [textView reactBlur];
+          [textView reactFocus];
+          _emitFocusBlur = YES;
+        }
+      }
+  }
+
   // isOnChangeHtmlSet
   emitHtml = newViewProps.isOnChangeHtmlSet;
-  
+
   [super updateProps:props oldProps:oldProps];
   // mandatory text and height checks
   [self anyTextMayHaveBeenModified];
   [self tryUpdatingHeight];
-  
+
   // autofocus - needs to be done at the very end
   if(isFirstMount && newViewProps.autoFocus) {
     [textView reactFocus];
@@ -545,21 +570,21 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 - (CGSize)measureSize:(CGFloat)maxWidth {
   // copy the the whole attributed string
   NSMutableAttributedString *currentStr = [[NSMutableAttributedString alloc] initWithAttributedString:textView.textStorage];
-  
+
   // edge case: empty input should still be of a height of a single line, so we add a mock "I" character
   if([currentStr length] == 0 ) {
     [currentStr appendAttributedString:
        [[NSAttributedString alloc] initWithString:@"I" attributes:textView.typingAttributes]
     ];
   }
-  
+
   // edge case: input with only a zero width space should still be of a height of a single line, so we add a mock "I" character
   if([currentStr length] == 1 && [[currentStr.string substringWithRange:NSMakeRange(0, 1)] isEqualToString:@"\u200B"]) {
     [currentStr appendAttributedString:
        [[NSAttributedString alloc] initWithString:@"I" attributes:textView.typingAttributes]
     ];
   }
-  
+
   // edge case: trailing newlines aren't counted towards height calculations, so we add a mock "I" character
   if(currentStr.length > 0) {
     unichar lastChar = [currentStr.string characterAtIndex:currentStr.length-1];
@@ -569,20 +594,20 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       ];
     }
   }
-  
+
   CGRect boundingBox = [currentStr boundingRectWithSize:
     CGSizeMake(maxWidth, CGFLOAT_MAX)
     options: NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
     context: nullptr
   ];
-  
+
   return CGSizeMake(maxWidth, ceil(boundingBox.size.height));
 }
 
 // make sure the newest state is kept in _state property
 - (void)updateState:(State::Shared const &)state oldState:(State::Shared const &)oldState {
   _state = std::static_pointer_cast<const EnrichedTextInputViewShadowNode::ConcreteState>(state);
-  
+
   // first render with all the needed stuff already defined (state and componentView)
   // so we need to run a single height calculation for any initial values
   if(oldState == nullptr) {
@@ -604,11 +629,11 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 - (void)tryUpdatingActiveStyles {
   // style updates are emitted only if something differs from the previously active styles
   BOOL updateNeeded = NO;
-  
+
   // data for onLinkDetected event
   LinkData *detectedLinkData;
   NSRange detectedLinkRange = NSMakeRange(0, 0);
-  
+
   // data for onMentionDetected event
   MentionParams *detectedMentionParams;
   NSRange detectedMentionRange = NSMakeRange(0, 0);
@@ -625,7 +650,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
         [_activeStyles removeObject:type];
       }
     }
-    
+
     // onLinkDetected event
     if(isActive && [type intValue] == [LinkStyle getStyleType]) {
       // get the link data
@@ -636,7 +661,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
         candidateLinkData = [linkStyleClass getLinkDataAt:textView.selectedRange.location];
         candidateLinkRange = [linkStyleClass getFullLinkRangeAt:textView.selectedRange.location];
       }
-      
+
       if(wasActive == NO) {
         // we changed selection from non-link to a link
         detectedLinkData = candidateLinkData;
@@ -651,7 +676,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
         detectedLinkRange = candidateLinkRange;
       }
     }
-    
+
     // onMentionDetected event
     if(isActive && [type intValue] == [MentionStyle getStyleType]) {
       // get mention data
@@ -662,7 +687,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
         candidateMentionParams = [mentionStyleClass getMentionParamsAt:textView.selectedRange.location];
         candidateMentionRange = [mentionStyleClass getFullMentionRangeAt:textView.selectedRange.location];
       }
-      
+
       if(wasActive == NO) {
         // selection was changed from a non-mention to a mention
         detectedMentionParams = candidateMentionParams;
@@ -678,7 +703,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       }
     }
   }
-    
+
   if(updateNeeded) {
     auto emitter = [self getEventEmitter];
     if(emitter != nullptr) {
@@ -701,23 +726,23 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       });
     }
   }
-  
+
   if(detectedLinkData != nullptr) {
     // emit onLinkeDetected event
     [self emitOnLinkDetectedEvent:detectedLinkData.text url:detectedLinkData.url range:detectedLinkRange];
-    
+
     _recentlyActiveLinkData = detectedLinkData;
     _recentlyActiveLinkRange = detectedLinkRange;
   }
-  
+
   if(detectedMentionParams != nullptr) {
     // emit onMentionDetected event
     [self emitOnMentionDetectedEvent:detectedMentionParams.text indicator:detectedMentionParams.indicator attributes:detectedMentionParams.attributes];
-    
+
     _recentlyActiveMentionParams = detectedMentionParams;
     _recentlyActiveMentionRange = detectedMentionRange;
   }
-  
+
   // emit onChangeHtml event if needed
   [self tryEmittingOnChangeHtmlEvent];
 }
@@ -797,7 +822,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     // we've got some seemingly proper html
     [parser replaceWholeFromHtml:initiallyProcessedHtml];
   }
-  
+
   // set recentlyChangedRange and check for changes
   recentlyChangedRange = NSMakeRange(0, textView.textStorage.string.length);
   [self anyTextMayHaveBeenModified];
@@ -866,7 +891,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 
 - (void)toggleRegularStyle:(StyleType)type {
   id<BaseStyleProtocol> styleClass = stylesDict[@(type)];
-  
+
   if([self handleStyleBlocksAndConflicts:type range:textView.selectedRange]) {
     [styleClass applyStyle:textView.selectedRange];
     [self anyTextMayHaveBeenModified];
@@ -877,7 +902,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   id<BaseStyleProtocol> styleClass = stylesDict[@(type)];
   // we always pass whole paragraph/s range to these styles
   NSRange paragraphRange = [textView.textStorage.string paragraphRangeForRange:textView.selectedRange];
-  
+
   if([self handleStyleBlocksAndConflicts:type range:paragraphRange]) {
     [styleClass applyStyle:paragraphRange];
     [self anyTextMayHaveBeenModified];
@@ -887,7 +912,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 - (void)addLinkAt:(NSInteger)start end:(NSInteger)end text:(NSString *)text url:(NSString *)url {
   LinkStyle *linkStyleClass = (LinkStyle *)stylesDict[@([LinkStyle getStyleType])];
   if(linkStyleClass == nullptr) { return; }
-  
+
   // translate the output start-end notation to range
   NSRange linkRange = NSMakeRange(start, end - start);
   if([self handleStyleBlocksAndConflicts:[LinkStyle getStyleType] range:linkRange]) {
@@ -900,7 +925,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   MentionStyle *mentionStyleClass = (MentionStyle *)stylesDict[@([MentionStyle getStyleType])];
   if(mentionStyleClass == nullptr) { return; }
   if([mentionStyleClass getActiveMentionRange] == nullptr) { return; }
-  
+
   if([self handleStyleBlocksAndConflicts:[MentionStyle getStyleType] range:[[mentionStyleClass getActiveMentionRange] rangeValue]]) {
     [mentionStyleClass addMention:indicator text:text attributes:attributes];
     [self anyTextMayHaveBeenModified];
@@ -910,7 +935,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 - (void)startMentionWithIndicator:(NSString *)indicator {
   MentionStyle *mentionStyleClass = (MentionStyle *)stylesDict[@([MentionStyle getStyleType])];
   if(mentionStyleClass == nullptr) { return; }
-  
+
   if([self handleStyleBlocksAndConflicts:[MentionStyle getStyleType] range:[[mentionStyleClass getActiveMentionRange] rangeValue]]) {
     [mentionStyleClass startMentionWithIndicator:indicator];
     [self anyTextMayHaveBeenModified];
@@ -924,17 +949,17 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   if(blocking.count != 0) {
     return NO;
   }
-  
+
   // handle conflicting styles: all of their occurences have to be removed
   NSArray<NSNumber *> *conflicting = [self getPresentStyleTypesFrom: _conflictingStyles[@(type)] range:range];
   if(conflicting.count != 0) {
     for(NSNumber *style in conflicting) {
       id<BaseStyleProtocol> styleClass = stylesDict[style];
-      
+
       if(range.length >= 1) {
         // for ranges, we need to remove each occurence
         NSArray<StylePair *> *allOccurences = [styleClass findAllOccurences:range];
-        
+
         for(StylePair* pair in allOccurences) {
           [styleClass removeAttributes: [pair.rangeValue rangeValue]];
         }
@@ -951,7 +976,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   NSMutableArray<NSNumber *> *resultArray = [[NSMutableArray<NSNumber *> alloc] init];
   for(NSNumber *type in types) {
     id<BaseStyleProtocol> styleClass = stylesDict[type];
-    
+
     if(range.length >= 1) {
       if([styleClass anyOccurence:range]) {
         [resultArray addObject:type];
@@ -971,14 +996,14 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   if(linkStyleClass != nullptr) {
     [linkStyleClass manageLinkTypingAttributes];
   }
-  
+
   // mention typing attribtues fix and active editing
   MentionStyle *mentionStyleClass = (MentionStyle *)stylesDict[@([MentionStyle getStyleType])];
   if(mentionStyleClass != nullptr) {
     [mentionStyleClass manageMentionTypingAttributes];
     [mentionStyleClass manageMentionEditing];
   }
-  
+
   // typing attributes for empty lines selection reset
   NSString *currentString = [textView.textStorage.string copy];
   if(textView.selectedRange.length == 0 && [_recentlyEmittedString isEqualToString:currentString]) {
@@ -1011,28 +1036,28 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   if(textView.markedTextRange != nullptr) {
     return;
   }
-  
+
   // zero width space adding or removal
   [ZeroWidthSpaceUtils handleZeroWidthSpacesInInput:self];
-  
+
   // emptying input typing attributes management
   if(textView.textStorage.string.length == 0 && _recentlyEmittedString.length > 0) {
     // reset typing attribtues
     textView.typingAttributes = defaultTypingAttributes;
   }
-  
+
   // inline code on newlines fix
   InlineCodeStyle *codeStyle = stylesDict[@([InlineCodeStyle getStyleType])];
   if(codeStyle != nullptr) {
     [codeStyle handleNewlines];
   }
-  
+
   // blockquote colors management
   BlockQuoteStyle *bqStyle = stylesDict[@([BlockQuoteStyle getStyleType])];
   if(bqStyle != nullptr) {
     [bqStyle manageBlockquoteColor];
   }
-  
+
   // improper headings fix
   H1Style *h1Style = stylesDict[@([H1Style getStyleType])];
   H2Style *h2Style = stylesDict[@([H2Style getStyleType])];
@@ -1042,39 +1067,39 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     [h2Style handleImproperHeadings];
     [h3Style handleImproperHeadings];
   }
-  
+
   // placholder management
   if(!_placeholderLabel.hidden && textView.textStorage.string.length > 0) {
     [self setPlaceholderLabelShown:NO];
   } else if(textView.textStorage.string.length == 0 && _placeholderLabel.hidden) {
     [self setPlaceholderLabelShown:YES];
   }
-  
+
   if(![textView.textStorage.string isEqualToString:_recentlyEmittedString]) {
     // mentions removal management
     MentionStyle *mentionStyleClass = (MentionStyle *)stylesDict[@([MentionStyle getStyleType])];
     if(mentionStyleClass != nullptr) {
       [mentionStyleClass handleExistingMentions];
     }
-    
+
     // modified words handling
     NSArray *modifiedWords = [WordsUtils getAffectedWordsFromText:textView.textStorage.string modificationRange:recentlyChangedRange];
     if(modifiedWords != nullptr) {
       for(NSDictionary *wordDict in modifiedWords) {
         NSString *wordText = (NSString *)[wordDict objectForKey:@"word"];
         NSValue *wordRange = (NSValue *)[wordDict objectForKey:@"range"];
-        
+
         if(wordText == nullptr || wordRange == nullptr) {
           continue;
         }
-        
+
         [self handleWordModificationBasedChanges:wordText inRange:[wordRange rangeValue]];
       }
     }
-    
+
     // emit string without zero width spaces
     NSString *stringToBeEmitted = [[textView.textStorage.string stringByReplacingOccurrencesOfString:@"\u200B" withString:@""] copy];
-  
+
     // emit onChangeText event
     auto emitter = [self getEventEmitter];
     if(emitter != nullptr) {
@@ -1082,11 +1107,11 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
         .value = [stringToBeEmitted toCppString]
       });
     }
-    
+
     // set the recently emitted string
     _recentlyEmittedString = stringToBeEmitted;
   }
-  
+
   // update height on each character change
   [self tryUpdatingHeight];
   // update active styles as well
@@ -1111,7 +1136,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
     if(_emitFocusBlur) {
       emitter->onInputFocus({});
     }
-    
+
     NSString *textAtSelection = [[[NSMutableString alloc] initWithString:textView.textStorage.string] substringWithRange: textView.selectedRange];
     emitter->onChangeSelection({
       .start = static_cast<int>(textView.selectedRange.location),
@@ -1133,7 +1158,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 
 - (bool)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
   recentlyChangedRange = NSMakeRange(range.location, text.length);
-  
+
   UnorderedListStyle *uStyle = stylesDict[@([UnorderedListStyle getStyleType])];
   OrderedListStyle *oStyle = stylesDict[@([OrderedListStyle getStyleType])];
   BlockQuoteStyle *bqStyle = stylesDict[@([BlockQuoteStyle getStyleType])];
@@ -1142,7 +1167,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   H1Style *h1Style = stylesDict[@([H1Style getStyleType])];
   H2Style *h2Style = stylesDict[@([H2Style getStyleType])];
   H3Style *h3Style = stylesDict[@([H3Style getStyleType])];
-  
+
   // some of the changes these checks do could interfere with later checks and cause a crash
   // so here I rely on short circuiting evaluation of the logical expression
   // either way it's not possible to have two of them come off at the same time
@@ -1170,7 +1195,7 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
 - (void)textViewDidChangeSelection:(UITextView *)textView {
   // emit the event
   NSString *textAtSelection = [[[NSMutableString alloc] initWithString:textView.textStorage.string] substringWithRange: textView.selectedRange];
-    
+
   auto emitter = [self getEventEmitter];
   if(emitter != nullptr) {
     // iOS range works differently because it specifies location and length
@@ -1181,10 +1206,10 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
       .text = [textAtSelection toCppString]
     });
   }
-  
+
   // manage selection changes
   [self manageSelectionBasedChanges];
-  
+
   // update active styles
   [self tryUpdatingActiveStyles];
 }

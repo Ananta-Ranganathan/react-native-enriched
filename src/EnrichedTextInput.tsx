@@ -130,6 +130,7 @@ export interface EnrichedTextInputProps extends Omit<ViewProps, 'children'> {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   htmlStyle?: HtmlStyle;
   style?: ViewStyle | TextStyle;
+  keyboardAppearance?: 'light' | 'dark' | 'default';
   onFocus?: () => void;
   onBlur?: () => void;
   onChangeText?: (e: NativeSyntheticEvent<OnChangeTextEvent>) => void;
@@ -180,6 +181,7 @@ export const EnrichedTextInput = ({
   style,
   autoCapitalize = 'sentences',
   htmlStyle = {},
+  keyboardAppearance = 'default',
   onFocus,
   onBlur,
   onChangeText,
@@ -339,6 +341,7 @@ export const EnrichedTextInput = ({
       style={style}
       autoCapitalize={autoCapitalize}
       htmlStyle={normalizedHtmlStyle}
+      keyboardAppearance={keyboardAppearance}
       onInputFocus={onFocus}
       onInputBlur={onBlur}
       onChangeText={onChangeText}
