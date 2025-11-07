@@ -33,6 +33,20 @@
   }]];
 }
 
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
+  if(action == @selector(paste:)) {
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    NSArray<NSString *> *pasteboardTypes = pasteboard.pasteboardTypes ?: @[];
+    if([pasteboardTypes containsObject:UTTypeImage.identifier] ||
+       [pasteboardTypes containsObject:UTTypePNG.identifier] ||
+       [pasteboardTypes containsObject:UTTypeJPEG.identifier]) {
+      return YES;
+    }
+  }
+  
+  return [super canPerformAction:action withSender:sender];
+}
+
 - (void)paste:(id)sender {
   EnrichedTextInputView *typedInput = (EnrichedTextInputView *)_input;
   if(typedInput == nullptr) { return; }
@@ -40,6 +54,14 @@
   UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
   NSArray<NSString *> *pasteboardTypes = pasteboard.pasteboardTypes;
   NSRange currentRange = typedInput->textView.selectedRange;
+  
+  if([pasteboardTypes containsObject:UTTypeImage.identifier] ||
+     [pasteboardTypes containsObject:UTTypePNG.identifier] ||
+     [pasteboardTypes containsObject:UTTypeJPEG.identifier]) {
+    // Handle image pasting
+    [self handleImagePaste:pasteboard range:currentRange input:typedInput];
+    NSLog(@"Pasted image");
+  }
   
   if([pasteboardTypes containsObject:UTTypeHTML.identifier]) {
     // we try processing the html contents
@@ -112,6 +134,17 @@
   [TextInsertionUtils replaceText:@"" at:typedInput->textView.selectedRange additionalAttributes:nullptr input:typedInput  withSelection:YES];
   
   [typedInput anyTextMayHaveBeenModified];
+}
+
+- (void)handleImagePaste:(UIPasteboard *)pasteboard range:(NSRange)range input:(EnrichedTextInputView *)input {
+  NSLog(@"Handling image paste");
+  UIImage *image = pasteboard.image;
+
+  if(!image) {
+    return;
+  }
+
+  NSLog(@"Pasteboard has image with size: %fx%f", image.size.width, image.size.height);
 }
 
 @end
