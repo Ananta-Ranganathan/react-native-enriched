@@ -870,6 +870,18 @@ Class<RCTComponentViewProtocol> EnrichedTextInputViewCls(void) {
   }
 }
 
+- (void)emitOnPasteEvent:(NSString *)type uri:(NSString *)uri {
+  auto emitter = [self getEventEmitter];
+  if(emitter != nullptr) {
+    if(type != nullptr && uri != nullptr) {
+      emitter->onPaste({
+        .type = [type toCppString],
+        .uri = [uri toCppString]
+      });
+    }
+  }
+}
+
 - (void)tryEmittingOnChangeHtmlEvent {
   if(!emitHtml || textView.markedTextRange != nullptr) {
     return;

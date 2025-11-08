@@ -24,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGSize)measureSize:(CGFloat)maxWidth;
 - (void)emitOnLinkDetectedEvent:(NSString *)text url:(NSString *)url range:(NSRange)range;
 - (void)emitOnMentionEvent:(NSString *)indicator text:(nullable NSString *)text;
+- (void)emitOnPasteEvent:(NSString *)type uri:(NSString *)uri;
 - (void)anyTextMayHaveBeenModified;
 - (BOOL)handleStyleBlocksAndConflicts:(StyleType)type range:(NSRange)range;
 @end
