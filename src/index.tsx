@@ -6,4 +6,5 @@ export type {
   OnLinkDetected,
   OnMentionDetected,
   OnChangeSelectionEvent,
+  OnPasteEvent,
 } from './EnrichedTextInputNativeComponent';

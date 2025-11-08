@@ -64,6 +64,11 @@ export interface OnChangeSelectionEvent {
   text: string;
 }
 
+export interface OnPasteEvent {
+  type: string;
+  uri: string;
+}
+
 export interface MentionStyleProperties {
   color?: ColorValue;
   backgroundColor?: ColorValue;
@@ -147,6 +152,7 @@ export interface NativeProps extends ViewProps {
   onMentionDetected?: DirectEventHandler<OnMentionDetectedInternal>;
   onMention?: DirectEventHandler<OnMentionEvent>;
   onChangeSelection?: DirectEventHandler<OnChangeSelectionEvent>;
+  onPaste?: DirectEventHandler<OnPasteEvent>;
 
   // Style related props - used for generating proper setters in component's manager
   // These should not be passed as regular props

@@ -16,6 +16,7 @@ import EnrichedTextInputNativeComponent, {
   type OnMentionEvent,
   type OnMentionDetected,
   type OnMentionDetectedInternal,
+  type OnPasteEvent,
   type MentionStyleProperties,
 } from './EnrichedTextInputNativeComponent';
 import type {
@@ -142,6 +143,7 @@ export interface EnrichedTextInputProps extends Omit<ViewProps, 'children'> {
   onChangeMention?: (e: OnChangeMentionEvent) => void;
   onEndMention?: (indicator: string) => void;
   onChangeSelection?: (e: NativeSyntheticEvent<OnChangeSelectionEvent>) => void;
+  onPaste?: (e: NativeSyntheticEvent<OnPasteEvent>) => void;
   /**
    * If true, Android will use experimental synchronous events.
    * This will prevent from input flickering when updating component size.
@@ -193,6 +195,7 @@ export const EnrichedTextInput = ({
   onChangeMention,
   onEndMention,
   onChangeSelection,
+  onPaste,
   androidExperimentalSynchronousEvents = false,
   ...rest
 }: EnrichedTextInputProps) => {
@@ -352,6 +355,7 @@ export const EnrichedTextInput = ({
       onMentionDetected={handleMentionDetected}
       onMention={handleMentionEvent}
       onChangeSelection={onChangeSelection}
+      onPaste={onPaste}
       androidExperimentalSynchronousEvents={
         androidExperimentalSynchronousEvents
       }
