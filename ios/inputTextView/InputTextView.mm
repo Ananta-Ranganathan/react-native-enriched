@@ -145,6 +145,35 @@
   }
 
   NSLog(@"Pasteboard has image with size: %fx%f", image.size.width, image.size.height);
+
+  NSData *imageData = UIImagePNGRepresentation(image);
+  NSString *extension = @"png";
+
+  if(imageData == nullptr) {
+    imageData = UIImageJPEGRepresentation(image, 0.9);
+    extension = @"jpg";
+  }
+
+  if(imageData == nullptr) {
+    NSLog(@"Failed to serialize pasted image");
+    return;
+  }
+
+  NSString *fileName = [NSString stringWithFormat:@"enriched-paste-%@.%@", [[NSUUID UUID] UUIDString], extension];
+  NSString *directory = NSTemporaryDirectory();
+  NSString *filePath = [directory stringByAppendingPathComponent:fileName];
+
+  NSError *error = nullptr;
+  BOOL wroteToDisk = [imageData writeToFile:filePath options:NSDataWritingAtomic error:&error];
+
+  if(!wroteToDisk) {
+    NSLog(@"Failed to persist pasted image: %@", error);
+    return;
+  }
+
+  NSURL *fileUrl = [NSURL fileURLWithPath:filePath];
+  NSLog(@"Persisted image to: %@", fileUrl);
+  [input emitOnPasteEvent:@"image" uri:fileUrl.absoluteString];
 }
 
 @end

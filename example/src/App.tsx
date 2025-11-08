@@ -287,7 +287,7 @@ export default function App() {
             onBlur={handleBlurEvent}
             onChangeSelection={handleSelectionChangeEvent}
             onPaste={(e) => {
-              console.log(e);
+              console.log(e.nativeEvent);
             }}
             androidExperimentalSynchronousEvents={
               ANDROID_EXPERIMENTAL_SYNCHRONOUS_EVENTS
