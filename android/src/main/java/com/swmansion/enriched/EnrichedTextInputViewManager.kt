@@ -63,20 +63,20 @@ class EnrichedTextInputViewManager : SimpleViewManager<EnrichedTextInputView>(),
     return super.updateState(view, props, stateWrapper)
   }
 
-   override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
-     val map = mutableMapOf<String, Any>()
-     map.put(OnInputFocusEvent.EVENT_NAME, mapOf("registrationName" to OnInputFocusEvent.EVENT_NAME))
-     map.put(OnInputBlurEvent.EVENT_NAME, mapOf("registrationName" to OnInputBlurEvent.EVENT_NAME))
-     map.put(OnChangeTextEvent.EVENT_NAME, mapOf("registrationName" to OnChangeTextEvent.EVENT_NAME))
-     map.put(OnChangeHtmlEvent.EVENT_NAME, mapOf("registrationName" to OnChangeHtmlEvent.EVENT_NAME))
-     map.put(OnChangeStateEvent.EVENT_NAME, mapOf("registrationName" to OnChangeStateEvent.EVENT_NAME))
-     map.put(OnLinkDetectedEvent.EVENT_NAME, mapOf("registrationName" to OnLinkDetectedEvent.EVENT_NAME))
-     map.put(OnMentionDetectedEvent.EVENT_NAME, mapOf("registrationName" to OnMentionDetectedEvent.EVENT_NAME))
-     map.put(OnMentionEvent.EVENT_NAME, mapOf("registrationName" to OnMentionEvent.EVENT_NAME))
-     map.put(OnChangeSelectionEvent.EVENT_NAME, mapOf("registrationName" to OnChangeSelectionEvent.EVENT_NAME))
+  override fun getExportedCustomDirectEventTypeConstants(): MutableMap<String, Any> {
+    val map = mutableMapOf<String, Any>()
+    map.put(OnInputFocusEvent.EVENT_NAME, mapOf("registrationName" to OnInputFocusEvent.EVENT_NAME))
+    map.put(OnInputBlurEvent.EVENT_NAME, mapOf("registrationName" to OnInputBlurEvent.EVENT_NAME))
+    map.put(OnChangeTextEvent.EVENT_NAME, mapOf("registrationName" to OnChangeTextEvent.EVENT_NAME))
+    map.put(OnChangeHtmlEvent.EVENT_NAME, mapOf("registrationName" to OnChangeHtmlEvent.EVENT_NAME))
+    map.put(OnChangeStateEvent.EVENT_NAME, mapOf("registrationName" to OnChangeStateEvent.EVENT_NAME))
+    map.put(OnLinkDetectedEvent.EVENT_NAME, mapOf("registrationName" to OnLinkDetectedEvent.EVENT_NAME))
+    map.put(OnMentionDetectedEvent.EVENT_NAME, mapOf("registrationName" to OnMentionDetectedEvent.EVENT_NAME))
+    map.put(OnMentionEvent.EVENT_NAME, mapOf("registrationName" to OnMentionEvent.EVENT_NAME))
+    map.put(OnChangeSelectionEvent.EVENT_NAME, mapOf("registrationName" to OnChangeSelectionEvent.EVENT_NAME))
 
-     return map
-   }
+    return map
+  }
 
   @ReactProp(name = "defaultValue")
   override fun setDefaultValue(view: EnrichedTextInputView?, value: String?) {
@@ -180,6 +180,10 @@ class EnrichedTextInputViewManager : SimpleViewManager<EnrichedTextInputView>(),
 
   override fun setAutoCapitalize(view: EnrichedTextInputView?, flag: String?) {
     view?.setAutoCapitalize(flag)
+  }
+
+  override fun setKeyboardAppearance(view: EnrichedTextInputView?, value: String?) {
+    // this prop isn't used on Android as of now, but the setter must be present
   }
 
   override fun setAndroidExperimentalSynchronousEvents(
